@@ -14,9 +14,9 @@ rootfiles = [ "/user_data/pdecastr/BTagSF/Samples/8TeV/53x_Summer13/TTbar_Summer
 o_dir = "/user_data/pdecastr/BTagSF/BetterTTrees/"              
 outfiles = []
 
-converter = ConverterRunOne()
 
 for f in rootfiles:
+    converter = ConverterRunOne()
     outfiles.append(o_dir+split(f)[1]) 
     tchain = TChain("treetop_mu")
     tchain.Add(f)

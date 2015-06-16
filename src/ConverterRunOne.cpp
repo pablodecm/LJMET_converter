@@ -1,7 +1,6 @@
 #define ConverterRunOne_cxx
 #include "../interface/ConverterRunOne.h"
 
-
 // start of query (executed on client)
 void ConverterRunOne::Begin(TTree * /*tree*/)
 {
@@ -26,8 +25,15 @@ void ConverterRunOne::SlaveBegin(TTree * /*tree*/)
    TString option = GetOption();
 
   ttree = new TTree("tree","Physics Object based TTree");
+
+  ttree->Branch("eventInfo","mut::EventInfo", &eventInfo, 64000,1);
+  ttree->Branch("pfmet","mut::MET", &pfmet, 64000,1);
+  ttree->Branch("pfjets","std::vector<mut::Jet>", &pfjets, 64000,1);
+  ttree->Branch("muons","std::vector<mut::Lepton>", &muons, 64000,1);
+
   fOutput->Add(ttree);  
 
+  
   disc_names.emplace_back("combinedInclusiveSecondaryVertexBJetTags"); 
   disc_names.emplace_back("combinedMVABJetTags"); 
   disc_names.emplace_back("combinedSecondaryVertexBJetTags"); 
@@ -59,6 +65,8 @@ void ConverterRunOne::SlaveBegin(TTree * /*tree*/)
     }
   }
 
+  std::cout << "Jet bracnches loaded" << std::endl;
+
   // load all muon branches
   for (int i=0;i < n_muon;i++) {
     std::string n_muon_energy = "muon"+std::to_string(i)+"_energy_mu";
@@ -72,6 +80,9 @@ void ConverterRunOne::SlaveBegin(TTree * /*tree*/)
     std::string n_muon_relIso = "muon"+std::to_string(i)+"_relIso_mu";
     muon_relIso.emplace_back(new TTreeReaderValue<double>(reader,n_muon_relIso.c_str()));
   }
+
+
+  std::cout << "Muon braches loaded" << std::endl;
 }
 
 // for each entry of the TTree
@@ -82,15 +93,15 @@ Bool_t ConverterRunOne::Process(Long64_t entry)
   reader.SetEntry(entry);
 
   // create and fill EventInfo
-  eventInfo = new mut::EventInfo(int(**event), **lumi, **run);
-  eventInfo->setNumPV(**nPV);
+  eventInfo = new mut::EventInfo(int(*event), *lumi, *run);
+  eventInfo->setNumPV(*nPV);
   std::vector<std::pair<std::string, bool>> filterPairs;
-  filterPairs.emplace_back("goodLumi",bool(**goodLumi));
+  filterPairs.emplace_back("goodLumi",bool(*goodLumi));
   eventInfo->setFilterPairs(filterPairs);
 
-  // create and fill EventInfo
-  pfmet = new mut::MET;
-  pfmet->SetPxPyPzE(**pf_met_px, **pf_met_py, 0.0, **pf_met_pt);
+  // create and fill mut MET
+  pfmet = new mut::MET();
+  pfmet->SetPxPyPzE(*pf_met_px, *pf_met_py, 0.0, *pf_met_pt);
 
   // create and fill Jet vector
   pfjets = new std::vector<mut::Jet>;
@@ -144,7 +155,5 @@ void ConverterRunOne::Terminate()
   TFile *o_file = new TFile(o_filename.c_str(), "RECREATE");
   if ( o_file->IsOpen() ) std::cout << "File is opened successfully" << std::endl;
   ttree->Write();
-
-  
   fOutput->Clear(); 
 }
