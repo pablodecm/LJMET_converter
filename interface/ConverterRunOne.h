@@ -35,6 +35,11 @@ class ConverterRunOne : public TSelector {
     TTreeReaderValue<int> run; 
     TTreeReaderValue<int> nPV;
     TTreeReaderValue<int> goodLumi;
+    // Event weights
+    TTreeReaderValue<float> weight_PU_down; 
+    TTreeReaderValue<float> weight_PU_nom; 
+    TTreeReaderValue<float> weight_PU_up; 
+    
 
 
     // Vectors of TTreeReaders pointers to jet variables
@@ -84,6 +89,9 @@ class ConverterRunOne : public TSelector {
      run(reader, "run_mu"),
      nPV(reader, "nPV_mu"),
      goodLumi(reader, "GoodLumi_mu"),
+     weight_PU_down(reader, "weight_PU_shiftDown_3_mu"),
+     weight_PU_nom(reader, "weight_PU_3_mu"),
+     weight_PU_up(reader, "weight_PU_shiftUp_3_mu"),
      pf_met_pt(reader,"PF_met_pt_mu"),
      pf_met_px(reader,"PF_met_px_mu"),
      pf_met_py(reader,"PF_met_py_mu")
