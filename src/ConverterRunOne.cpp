@@ -97,15 +97,11 @@ Bool_t ConverterRunOne::Process(Long64_t entry)
   eventInfo->setNumPV(*nPV);
   std::vector<std::pair<std::string, bool>> filterPairs;
   filterPairs.emplace_back("goodLumi",bool(*goodLumi));
+  eventInfo->setFilterPairs(filterPairs);
   std::vector<std::pair<std::string, float>> weightPairs;
   weightPairs.emplace_back("weight_PU_down", *weight_PU_down);
   weightPairs.emplace_back("weight_PU_nom", *weight_PU_nom);
   weightPairs.emplace_back("weight_PU_up", *weight_PU_up);
-  eventInfo->setWeightPairs(weightPairs);
-
-  // create and fill mut MET
-  pfmet = new mut::MET();
-  pfmet->SetPxPyPzE(*pf_met_px, *pf_met_py, 0.0, *pf_met_pt);
   eventInfo->setWeightPairs(weightPairs);
 
   // create and fill mut MET
