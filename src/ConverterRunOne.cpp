@@ -65,8 +65,6 @@ void ConverterRunOne::SlaveBegin(TTree * /*tree*/)
     }
   }
 
-  std::cout << "Jet bracnches loaded" << std::endl;
-
   // load all muon branches
   for (int i=0;i < n_muon;i++) {
     std::string n_muon_energy = "muon"+std::to_string(i)+"_energy_mu";
@@ -81,8 +79,6 @@ void ConverterRunOne::SlaveBegin(TTree * /*tree*/)
     muon_relIso.emplace_back(new TTreeReaderValue<double>(reader,n_muon_relIso.c_str()));
   }
 
-
-  std::cout << "Muon braches loaded" << std::endl;
 }
 
 // for each entry of the TTree
