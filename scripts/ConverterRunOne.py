@@ -11,7 +11,7 @@ data = ["Data_2012ABCD_Winter13_ReReco.root"]
 mc_bn = ["TTbar_{}Summer13.root",
          "T_t_{}Summer13.root",
          "Tbar_t_{}Summer13.root",
-         "T_tW_{}_Summer13.root",
+         "T_tW_{}Summer13.root",
          "Tbar_tW_{}Summer13.root",
          "WJets_{}Summer13.root",
          "ZJets_{}Summer13.root"]
