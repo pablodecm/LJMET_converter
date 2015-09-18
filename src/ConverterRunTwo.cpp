@@ -72,10 +72,8 @@ Bool_t ConverterRunTwo::Process(Long64_t entry)
                          pfjet_phi->at(i), pfjet_energy->at(i));
     pfjets->back().setPartonFlavour(jet_flavour->at(i));
     std::vector<std::pair<std::string, float>> disPairs;
-    std::cout << "energy size" << pfjet_energy->size() << std::endl;
     for  (auto const &a_disc : pfjet_disc) {
       disPairs.emplace_back(a_disc.first,(**a_disc.second).at(i));
-      std::cout << "disc size" << (**a_disc.second).size() << std::endl;
       pfjets->back().setDiscriminatorPairs(disPairs);
     }
   }
@@ -86,8 +84,6 @@ Bool_t ConverterRunTwo::Process(Long64_t entry)
     muons->emplace_back(muon_pt->at(i), muon_eta->at(i), muon_phi->at(i), muon_energy->at(i));
     // add isolation variables
     std::vector<std::pair<std::string, float>> isoPairs;
-    std::cout << "relIso" << muon_relIso->size() << std::endl;
-    std::cout << "energy" << muon_energy->size() << std::endl;
     isoPairs.emplace_back("relIso", muon_relIso->at(i));
     muons->back().setLeptonIsoPairs(isoPairs);
   }
