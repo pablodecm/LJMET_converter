@@ -7,6 +7,14 @@ void ConverterRunTwo::Begin(TTree * /*tree*/)
 
    std::string option = GetOption();
 
+}
+
+// right after begin (executed on slave)
+void ConverterRunTwo::SlaveBegin(TTree * /*tree*/)
+{
+
+  std::string  option = GetOption();
+
    std::size_t i_ofile = option.find("ofile="); 
    if (i_ofile != std::string::npos) {
      std::size_t length = (option.find(";", i_ofile) -  option.find("=", i_ofile) - 1);
@@ -16,13 +24,8 @@ void ConverterRunTwo::Begin(TTree * /*tree*/)
    }
 
    std::cout << "Output filename: " << o_filename << std::endl;
-}
 
-// right after begin (executed on slave)
-void ConverterRunTwo::SlaveBegin(TTree * /*tree*/)
-{
-
-   TString option = GetOption();
+   o_file = new TFile(o_filename.c_str(), "RECREATE");
 
   ttree = new TTree("tree","Physics Object based TTree");
 
@@ -30,8 +33,9 @@ void ConverterRunTwo::SlaveBegin(TTree * /*tree*/)
   ttree->Branch("pfmet","mut::MET", &pfmet, 64000,1);
   ttree->Branch("pfjets","std::vector<mut::Jet>", &pfjets, 64000,1);
   ttree->Branch("muons","std::vector<mut::Lepton>", &muons, 64000,1);
+  ttree->Branch("elecs","std::vector<mut::Lepton>", &elecs, 64000,1);
 
-  fOutput->Add(ttree);  
+  ttree->AutoSave();
 
   
   disc_names.emplace_back("pfCombinedInclusiveSecondaryVertexV2BJetTags"); 
@@ -78,7 +82,7 @@ Bool_t ConverterRunTwo::Process(Long64_t entry)
     }
   }
 
-  // create and fill Muon vector
+  // create and fill muon vector
   muons = new std::vector<mut::Lepton>;
   for (std::size_t i=0;i < muon_energy->size();i++) {
     muons->emplace_back(muon_pt->at(i), muon_eta->at(i), muon_phi->at(i), muon_energy->at(i));
@@ -88,12 +92,23 @@ Bool_t ConverterRunTwo::Process(Long64_t entry)
     muons->back().setLeptonIsoPairs(isoPairs);
   }
 
+  // create and fill electron vector
+  elecs = new std::vector<mut::Lepton>;
+  for (std::size_t i=0;i < elec_energy->size();i++) {
+    elecs->emplace_back(elec_pt->at(i), elec_eta->at(i), elec_phi->at(i), elec_energy->at(i));
+    // add isolation variables
+    std::vector<std::pair<std::string, float>> isoPairs;
+    isoPairs.emplace_back("relIso", elec_relIso->at(i));
+    elecs->back().setLeptonIsoPairs(isoPairs);
+  }
+
   ttree->Fill();
 
   delete eventInfo;
   delete pfjets;
   delete pfmet;
   delete muons;
+  delete elecs;
 
   return true;
 }
@@ -102,15 +117,13 @@ Bool_t ConverterRunTwo::Process(Long64_t entry)
 void ConverterRunTwo::SlaveTerminate()
 {
 
+  ttree->AutoSave();
+  delete ttree;
+  delete o_file;
 }
 
 // last function called (on client)
 void ConverterRunTwo::Terminate()
 {
-  TTree* ttree = dynamic_cast<TTree *>(fOutput->FindObject(Form("tree"))); 
 
-  TFile *o_file = new TFile(o_filename.c_str(), "RECREATE");
-  if ( o_file->IsOpen() ) std::cout << "File is opened successfully" << std::endl;
-  ttree->Write();
-  fOutput->Clear(); 
 }

@@ -47,12 +47,21 @@ class ConverterRunTwo : public TSelector {
     // Vector of discriminator names to attach to each jet
     std::vector<std::string> disc_names;
 
-    // Vectors of TTreeReader pointers to muon variables
+    // TTreeReaders to muon variables
     TTreeReaderValue<std::vector<double>> muon_energy;
     TTreeReaderValue<std::vector<double>> muon_eta;
     TTreeReaderValue<std::vector<double>> muon_phi;
     TTreeReaderValue<std::vector<double>> muon_pt;
     TTreeReaderValue<std::vector<double>> muon_relIso;
+    TTreeReaderValue<std::vector<int>> muon_charge;
+
+    // TTreeReaders to elec variables
+    TTreeReaderValue<std::vector<double>> elec_energy;
+    TTreeReaderValue<std::vector<double>> elec_eta;
+    TTreeReaderValue<std::vector<double>> elec_phi;
+    TTreeReaderValue<std::vector<double>> elec_pt;
+    TTreeReaderValue<std::vector<double>> elec_relIso;
+    TTreeReaderValue<std::vector<int>> elec_charge;
 
     // TreeReader pointer to MET variables
     TTreeReaderValue<double> pf_met_energy;
@@ -65,10 +74,13 @@ class ConverterRunTwo : public TSelector {
     mut::EventInfo * eventInfo = nullptr;
     std::vector<mut::Jet> * pfjets = nullptr;
     std::vector<mut::Lepton> * muons = nullptr;
+    std::vector<mut::Lepton> * elecs = nullptr;
     mut::MET * pfmet = nullptr;
 
     // TTree pointer
     TTree * ttree;
+    // TFile poinyer
+    TFile * o_file;
 
     // default constructor
     ConverterRunTwo(TTree * /*tree*/ =0) : 
@@ -86,6 +98,13 @@ class ConverterRunTwo : public TSelector {
      muon_phi(reader,"muPhi_singleLepCalc"),
      muon_pt(reader,"muPt_singleLepCalc"),
      muon_relIso(reader,"muRelIso_singleLepCalc"),
+     muon_charge(reader,"muCharge_singleLepCalc"),
+     elec_energy(reader,"elEnergy_singleLepCalc"),
+     elec_eta(reader,"elEta_singleLepCalc"),
+     elec_phi(reader,"elPhi_singleLepCalc"),
+     elec_pt(reader,"elPt_singleLepCalc"),
+     elec_relIso(reader,"elRelIso_singleLepCalc"),
+     elec_charge(reader,"elCharge_singleLepCalc"),
      pf_met_energy(reader,"corr_met_singleLepCalc"),
      pf_met_phi(reader,"corr_met_phi_singleLepCalc")
 {}
