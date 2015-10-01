@@ -24,6 +24,7 @@ void ConverterRunTwo::SlaveBegin(TTree * /*tree*/)
    }
 
    std::cout << "Output filename: " << o_filename << std::endl;
+   n_entries = 0;
 
    o_file = new TFile(o_filename.c_str(), "RECREATE");
 
@@ -52,8 +53,13 @@ void ConverterRunTwo::SlaveBegin(TTree * /*tree*/)
 Bool_t ConverterRunTwo::Process(Long64_t entry)
 {
 
+  n_entries++;
+  if ((n_entries%1000) == 0) std::cout << "processing " << n_entries << " entry" << std::endl; 
+
   // set TTreeReader entry
-  reader.SetEntry(entry);
+  reader.SetLocalEntry(entry);
+
+  if ((*run < min_run) || (*run > max_run)) return false;
 
   // create and fill EventInfo
   eventInfo = new mut::EventInfo(int(*event), *lumi, *run);
@@ -61,6 +67,9 @@ Bool_t ConverterRunTwo::Process(Long64_t entry)
   std::vector<std::pair<std::string, bool>> filterPairs;
   eventInfo->setFilterPairs(filterPairs);
   std::vector<std::pair<std::string, float>> weightPairs;
+  float MC_weight = 1.0; 
+  if ((*MCweight) < 0.0) MC_weight = -1.0;
+  weightPairs.emplace_back("MCweight", MC_weight);
   eventInfo->setWeightPairs(weightPairs);
 
   // create and fill mut MET

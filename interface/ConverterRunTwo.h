@@ -7,6 +7,7 @@
 #include <utility>
 #include <iostream>
 #include <memory>
+#include <limits>
 
 #include <TROOT.h>
 #include <TChain.h>
@@ -26,6 +27,8 @@
 class ConverterRunTwo : public TSelector {
   public :
 
+    long n_entries;
+
     // asociated with a TTree 
     TTreeReader reader;
 
@@ -34,8 +37,12 @@ class ConverterRunTwo : public TSelector {
     TTreeReaderValue<int> lumi;
     TTreeReaderValue<int> run; 
     TTreeReaderValue<int> nPV;
-    
+    // event MC weight (can be negative)
+    TTreeReaderValue<double> MCweight;
 
+    // to be able to filter by run
+    int min_run = std::numeric_limits<int>::min();
+    int max_run = std::numeric_limits<int>::max();
 
     // Vectors of TTreeReaders vectors
     TTreeReaderValue<std::vector<double>> pfjet_energy;
@@ -88,6 +95,7 @@ class ConverterRunTwo : public TSelector {
      lumi(reader, "lumi_CommonCalc"),
      run(reader, "run_CommonCalc"),
      nPV(reader, "nPV_singleLepCalc"),
+     MCweight(reader, "MCWeight_singleLepCalc"),
      pfjet_energy(reader,"AK4JetEnergy_singleLepCalc"),
      pfjet_eta(reader,"AK4JetEta_singleLepCalc"),
      pfjet_phi(reader,"AK4JetPhi_singleLepCalc"),
