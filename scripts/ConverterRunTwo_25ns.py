@@ -6,26 +6,25 @@ from os.path import split
 
 folder_dir = "/user_data/pdecastr/BTagSF/Samples/13TeV/LJMet_METnoHFplusHTT_092515/"
 
-data_names = [["SingleMuon_PR", {"min_run" : 251585, "max_run": 251883 }],
-              ["SingleMuon_RR", {"min_run" : 251162, "max_run": 251562 }],
-              ["SingleMuon_PRC_50ns", {}]]
+data_names = [["SingleMuon_PRC", {}],
+              ["SingleMuon_PRD", {}]]
               
               
 
-mc_names = ["TTJets_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8_50ns",
-            "WJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8_50ns",
-            "DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8_50ns",
-            "ST_t-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1_50ns",
-            "ST_t-channel_top_4f_leptonDecays_13TeV-powheg-pythia8_TuneCUETP8M1_50ns",
-            "ST_t-channel_antitop_4f_leptonDecays_13TeV-powheg-pythia8_TuneCUETP8M1_50ns",
-            "ST_tW_top_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1_50ns",
-            "ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1_50ns",
-            "WW_TuneCUETP8M1_13TeV-pythia8_50ns",
-            "WZ_TuneCUETP8M1_13TeV-pythia8_50ns" ]
+mc_names = ["TTJets_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8_25ns",
+            "WJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8_25ns",
+            "DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8_25ns",
+            "ST_t-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1_25ns",
+            "ST_t-channel_top_4f_leptonDecays_13TeV-powheg-pythia8_TuneCUETP8M1_25ns",
+            "ST_t-channel_antitop_4f_leptonDecays_13TeV-powheg-pythia8_TuneCUETP8M1_25ns",
+            "ST_tW_top_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1_25ns",
+            "ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1_25ns",
+            "WW_TuneCUETP8M1_13TeV-pythia8_25ns",
+            "WZ_TuneCUETP8M1_13TeV-pythia8_25ns" ]
          
 
 
-o_dir = "/user_data/pdecastr/BTagSF/BetterTTrees/13TeV_50ns/"              
+o_dir = "/user_data/pdecastr/BTagSF/BetterTTrees/13TeV_25ns/"              
 
 rootnames = mc_names + data_names
 
