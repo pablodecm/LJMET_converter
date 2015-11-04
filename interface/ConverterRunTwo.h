@@ -89,6 +89,9 @@ class ConverterRunTwo : public TSelector {
     // TFile poinyer
     TFile * o_file;
 
+    // configuration
+    bool hasBTagSFCalc = false; 
+
     // default constructor
     ConverterRunTwo(TTree * /*tree*/ =0) : 
      event(reader,"event_CommonCalc"), 

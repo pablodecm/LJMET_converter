@@ -4,18 +4,19 @@ import ROOT
 from ROOT import TChain, ConverterRunTwo
 from os.path import split
 
-folder_dir = "/user_data/pdecastr/BTagSF/Samples/13TeV/LJMet_METnoHFplusHTT_092515/"
+folder_dir = "/user_data/pdecastr/BTagSF/Samples/13TeV/LJMet_1lep_102715/"
 
-data_names = [["SingleMuon_PRC", {}],
-              ["SingleMuon_PRD", {}]]
+data_names = [["SingleMuon_PRD_25ns",{}],
+              ["SingleMuon_RRC_25ns",{}],
+              ["SingleMuon_RRD_25ns", {}]]
               
               
 
 mc_names = ["TTJets_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8_25ns",
             "WJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8_25ns",
             "DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8_25ns",
+            "ST_s-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1_25ns",
             "ST_t-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1_25ns",
-            "ST_t-channel_top_4f_leptonDecays_13TeV-powheg-pythia8_TuneCUETP8M1_25ns",
             "ST_t-channel_antitop_4f_leptonDecays_13TeV-powheg-pythia8_TuneCUETP8M1_25ns",
             "ST_tW_top_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1_25ns",
             "ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1_25ns",

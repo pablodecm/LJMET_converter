@@ -38,13 +38,19 @@ void ConverterRunTwo::SlaveBegin(TTree * /*tree*/)
 
   ttree->AutoSave();
 
-  
+
+  if (hasBTagSFCalc) {
   disc_names.emplace_back("pfCombinedInclusiveSecondaryVertexV2BJetTags"); 
   disc_names.emplace_back("pfCombinedMVABJetTags");
 
  for ( std::string disc_name : disc_names ) { 
     std::string b_name = disc_name+"_BTagSFCalc";
     pfjet_disc.emplace_back(disc_name, std::unique_ptr<TTreeReaderValue<std::vector<double>>>(new TTreeReaderValue<std::vector<double>>(reader,b_name.c_str())));
+  }
+  } else {
+    disc_names.emplace_back("pfCombinedInclusiveSecondaryVertexV2BJetTags"); 
+    std::string b_name = "theJetCSV_JetSubCalc";
+    pfjet_disc.emplace_back(disc_names.at(0), std::unique_ptr<TTreeReaderValue<std::vector<double>>>(new TTreeReaderValue<std::vector<double>>(reader,b_name.c_str())));
   }
 
 }
@@ -54,7 +60,7 @@ Bool_t ConverterRunTwo::Process(Long64_t entry)
 {
 
   n_entries++;
-  if ((n_entries%1000) == 0) std::cout << "processing " << n_entries << " entry" << std::endl; 
+  if ((n_entries%10000) == 0) std::cout << "processing " << n_entries << " entry" << std::endl; 
 
   // set TTreeReader entry
   reader.SetLocalEntry(entry);
