@@ -9,19 +9,25 @@ ROOT TTrees.
 
 * setup your CMSSSW area (use modern version please)
 
+```
     export SCRAM_ARCH=slc6_amd64_gcc491
     cmsrel CMSSW_7_4_14
     cd CMSSW_7_4_14/src/
     cmsenv
+```
 
 * clone mut_dataformats and LJMET_converter repositories  
 
+```
     git clone https://github.com/pablodecm/mut_dataformats.git mut_framework/mut_dataformats
     git clone https://github.com/pablodecm/LJMET_converter.git mut_framework/LJMET_converter
+```
 
 * compile everything with SCRAM
 
+```
     scram b -j 8
+```
 
 ## Usage
 
