@@ -1,55 +1,41 @@
 #!/usr/bin/env python 
 
-import ROOT
+from mut_framework.LJMET_converter.samples_25ns import data_samples,mc_samples
 from ROOT import TChain, ConverterRunTwo
-from os.path import split
+import  os
+import argparse
 
-folder_dir = "/user_data/pdecastr/BTagSF/Samples/13TeV/LJMet_1lep_110415/nominal/"
 
-data_names = [["SingleMuon_RRC_25ns",{}],
-              ["SingleMuon_PRD_25ns",{}],
-              ["SingleMuon_RRD_25ns", {}]]
+default_input_dir = "/user_data/pdecastr/BTagSF/Samples/13TeV/LJMet_1lep_110415/nominal/"
+default_output_dir = "/user_data/pdecastr/BTagSF/BetterTTrees/13TeV_25ns/"
 
-mc_names = ["TTJets_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8_25ns",
-            "WJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8_25ns",
-            "DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8_25ns",
-            "ST_s-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1_25ns",
-            "ST_t-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1_25ns",
-            "ST_t-channel_antitop_4f_leptonDecays_13TeV-powheg-pythia8_TuneCUETP8M1_25ns",
-            "ST_tW_top_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1_25ns",
-            "ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1_25ns",
-            "WW_TuneCUETP8M1_13TeV-pythia8_25ns",
-            "WZ_TuneCUETP8M1_13TeV-pythia8_25ns",
-            "TT_TuneCUETP8M1_13TeV-powheg-pythia8"]
+parser = argparse.ArgumentParser(description='integers.')
+parser.add_argument('--input_folder', default=default_input_dir, type=str)
+parser.add_argument('--output_folder', default=default_output_dir, type=str)
+parser.add_argument('--mc_samples', default=[], nargs='*')
+parser.add_argument('--data_samples', default=[], nargs='*')
+parser.add_argument('--all_samples', action="store_true")
+args = parser.parse_args()
 
-qcd_names = ["QCD_Pt-1000toInf_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8_25ns",
-             "QCD_Pt-120to170_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8_25ns",
-             "QCD_Pt-170to300_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8_25ns",
-             "QCD_Pt-300to470_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8_25ns",
-             "QCD_Pt-470to600_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8_25ns",
-             "QCD_Pt-50to80_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8_25ns",
-             "QCD_Pt-600to800_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8_25ns",
-             "QCD_Pt-800to1000_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8_25ns",
-             "QCD_Pt-80to120_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8_25ns"]
+i_folder = args.input_folder
+o_folder = args.output_folder
 
-wjet_names = ["WJetsToLNu_HT-100To200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_25ns",
-              "WJetsToLNu_HT-1200To2500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_25ns",
-              "WJetsToLNu_HT-200To400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_25ns",
-              "WJetsToLNu_HT-2500ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_25ns",
-              "WJetsToLNu_HT-400To600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_25ns",
-              "WJetsToLNu_HT-600To800_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_25ns",
-              "WJetsToLNu_HT-800To1200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_25ns",
-              "WJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8_25ns",
-              "WJetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_25ns"]
+if not os.path.exists(o_folder):
+        os.makedirs(o_folder)
 
-mc_names = mc_names + qcd_names + wjet_names 
-o_dir = "/user_data/pdecastr/BTagSF/BetterTTrees/13TeV_25ns/"              
+if args.all_samples:
+    mc_names = mc_samples.keys()
+    data_names = data_samples.keys()
+else:
+    mc_names = args.mc_samples
+    data_names = args.data_samples
 
 for name in mc_names:
     converter = ConverterRunTwo()
-    outfile = o_dir+name+".root" 
+    full_name = mc_samples[name]["full_name"]
+    outfile = o_folder+full_name+".root" 
     tchain = TChain("ljmet")
-    wildcard_name = folder_dir + name + "/" + name + "*.root"
+    wildcard_name = i_folder + full_name + "/" + full_name + "*.root"
     print "Processing all files with wildcard:  {} ".format(wildcard_name)
     n_files = tchain.Add(wildcard_name)
     print "Added {} files to TChain".format(n_files)
@@ -57,11 +43,10 @@ for name in mc_names:
 
 for name in data_names:
     converter = ConverterRunTwo()
-    for k,v in name[1].items():
-        setattr(converter,k,v)
-    outfile = o_dir+name[0]+".root" 
+    full_name = data_samples[name]["full_name"]
+    outfile = o_folder+full_name+".root" 
     tchain = TChain("ljmet")
-    wildcard_name = folder_dir + name[0] + "/" + name[0] + "*.root"
+    wildcard_name = i_folder + full_name + "/" + full_name + "*.root"
     print "Processing all files with wildcard:  {} ".format(wildcard_name)
     n_files = tchain.Add(wildcard_name)
     print "Added {} files to TChain".format(n_files)
