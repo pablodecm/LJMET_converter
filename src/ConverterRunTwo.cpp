@@ -69,8 +69,23 @@ Bool_t ConverterRunTwo::Process(Long64_t entry)
 
   // create and fill EventInfo
   eventInfo = new mut::EventInfo(int(*event), *lumi, *run);
+  // check if data and properly set EventInfo
+  bool isRealData = (trig_names_MC_muon->size() == 0);
+  eventInfo->setIsRealData(isRealData);
   eventInfo->setNumPV(*nPV);
   std::vector<std::pair<std::string, bool>> filterPairs;
+  // check if event passes any muon trigger 
+  bool pass_any_muon_trig = false;
+  for (std::size_t i=0;i < trig_value_MC_muon->size(); i++) {
+    pass_any_muon_trig |= (trig_value_MC_muon->at(i) == 1);
+  }
+  filterPairs.emplace_back("pass_any_muon_trig", pass_any_muon_trig);
+  // check if event passes any elec trigger 
+  bool pass_any_elec_trig = false;
+  for (std::size_t i=0;i < trig_value_MC_elec->size(); i++) {
+    pass_any_elec_trig |= (trig_value_MC_elec->at(i) == 1);
+  }
+  filterPairs.emplace_back("pass_any_elec_trig", pass_any_elec_trig);
   eventInfo->setFilterPairs(filterPairs);
   std::vector<std::pair<std::string, float>> weightPairs;
   float MC_weight = 1.0; 

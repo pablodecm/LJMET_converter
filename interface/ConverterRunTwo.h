@@ -74,6 +74,12 @@ class ConverterRunTwo : public TSelector {
     TTreeReaderValue<double> pf_met_energy;
     TTreeReaderValue<double> pf_met_phi;
 
+    // TreeReader names and values (>0 if pass)  of triggers
+    TTreeReaderValue<std::vector<std::string>> trig_names_MC_elec;
+    TTreeReaderValue<std::vector<int>> trig_value_MC_elec;
+    TTreeReaderValue<std::vector<std::string>> trig_names_MC_muon;
+    TTreeReaderValue<std::vector<int>> trig_value_MC_muon;
+
     // output filename
     std::string o_filename;
 
@@ -117,7 +123,11 @@ class ConverterRunTwo : public TSelector {
      elec_relIso(reader,"elRelIso_singleLepCalc"),
      elec_charge(reader,"elCharge_singleLepCalc"),
      pf_met_energy(reader,"corr_met_singleLepCalc"),
-     pf_met_phi(reader,"corr_met_phi_singleLepCalc")
+     pf_met_phi(reader,"corr_met_phi_singleLepCalc"),
+     trig_names_MC_elec(reader, "vsSelMCTriggersEl_singleLepCalc"),
+     trig_value_MC_elec(reader, "viSelMCTriggersEl_singleLepCalc"),
+     trig_names_MC_muon(reader, "vsSelMCTriggersMu_singleLepCalc"), 
+     trig_value_MC_muon(reader, "viSelMCTriggersMu_singleLepCalc")
 {}
 
    // destructor
