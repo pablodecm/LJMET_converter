@@ -70,7 +70,8 @@ Bool_t ConverterRunTwo::Process(Long64_t entry)
   // create and fill EventInfo
   eventInfo = new mut::EventInfo(int(*event), *lumi, *run);
   // check if data and properly set EventInfo
-  bool isRealData = (trig_names_MC_muon->size() == 0);
+  // data seems to have 1 or less elements in that vector 
+  bool isRealData = (trig_names_MC_muon->size() < 2);
   eventInfo->setIsRealData(isRealData);
   eventInfo->setNumPV(*nPV);
   eventInfo->setNumPU(*nPU);
