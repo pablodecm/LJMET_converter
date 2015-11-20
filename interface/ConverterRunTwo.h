@@ -39,6 +39,9 @@ class ConverterRunTwo : public TSelector {
     TTreeReaderValue<int> nPV;
     // event MC weight (can be negative)
     TTreeReaderValue<double> MCweight;
+    // MC true pile up
+    TTreeReaderValue<int> nPU;
+    TTreeReaderValue<int> nTruePU;
 
     // to be able to filter by run
     int min_run = std::numeric_limits<int>::min();
@@ -98,6 +101,9 @@ class ConverterRunTwo : public TSelector {
     // configuration
     bool hasBTagSFCalc = false; 
 
+    // to keep pu_weight_pairs
+    std::vector<std::pair<std::string, std::vector<double>>> pu_weights_pairs;
+
     // default constructor
     ConverterRunTwo(TTree * /*tree*/ =0) : 
      event(reader,"event_CommonCalc"), 
@@ -105,6 +111,8 @@ class ConverterRunTwo : public TSelector {
      run(reader, "run_CommonCalc"),
      nPV(reader, "nPV_singleLepCalc"),
      MCweight(reader, "MCWeight_singleLepCalc"),
+     nPU(reader, "nPileupInteractions_singleLepCalc"),
+     nTruePU(reader, "nTrueInteractions_singleLepCalc"),
      pfjet_energy(reader,"theJetEnergy_JetSubCalc"),
      pfjet_eta(reader,"theJetEta_JetSubCalc"),
      pfjet_phi(reader,"theJetPhi_JetSubCalc"),
@@ -146,6 +154,10 @@ class ConverterRunTwo : public TSelector {
    virtual TList  *GetOutputList() const { return fOutput; }
    virtual void    SlaveTerminate();
    virtual void    Terminate();
+
+   // add PU weight configuration 
+   void add_pu_weight( std::string w_name, std::vector<double> w_vector)
+    { pu_weights_pairs.emplace_back(w_name, w_vector); }
 
 
 };

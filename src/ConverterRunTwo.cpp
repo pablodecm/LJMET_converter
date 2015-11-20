@@ -73,6 +73,8 @@ Bool_t ConverterRunTwo::Process(Long64_t entry)
   bool isRealData = (trig_names_MC_muon->size() == 0);
   eventInfo->setIsRealData(isRealData);
   eventInfo->setNumPV(*nPV);
+  eventInfo->setNumPU(*nPU);
+  eventInfo->setNumTruePU(*nTruePU);
   std::vector<std::pair<std::string, bool>> filterPairs;
   // check if event passes any muon trigger 
   bool pass_any_muon_trig = false;
@@ -91,6 +93,11 @@ Bool_t ConverterRunTwo::Process(Long64_t entry)
   float MC_weight = 1.0; 
   if ((*MCweight) < 0.0) MC_weight = -1.0;
   weightPairs.emplace_back("MCweight", MC_weight);
+  // PU reweighting for MC
+  for (const auto & pu_w_pair : pu_weights_pairs) {
+    weightPairs.emplace_back(pu_w_pair.first,
+                             pu_w_pair.second[eventInfo->getNumTruePU()]);
+  } 
   eventInfo->setWeightPairs(weightPairs);
 
   // create and fill mut MET

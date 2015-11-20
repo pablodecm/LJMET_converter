@@ -1,24 +1,24 @@
 
 data_samples = {}
 
-data_samples["SingleMuon_RRC_25ns"] = {
+data_samples["SingleMuon_RRC"] = {
     "full_name" : "SingleMuon_RRC_25ns",
     "lumi" : 16.34 
 }
 
-data_samples["SingleMuon_RRD_25ns"] = {
+data_samples["SingleMuon_RRD"] = {
     "full_name" : "SingleMuon_RRD_25ns",
     "lumi" : 552.67 
 }
 
-data_samples["SingleMuon_PRD_25ns"] = {
+data_samples["SingleMuon_PRD"] = {
     "full_name" : "SingleMuon_PRD_25ns",
     "lumi" : 711.21 
 }
 mc_samples = {}
 
 mc_samples["TT_powheg"] = { 
-    "full_name" : "TT_TuneCUETP8M1_13TeV-powheg-pythia8",
+    "full_name" : "TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_25ns",
     "xs" : 831.76,
     "gen_events" : 18508030.
 }
