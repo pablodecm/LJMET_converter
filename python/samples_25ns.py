@@ -18,9 +18,9 @@ data_samples["SingleMuon_PRD"] = {
 mc_samples = {}
 
 mc_samples["TT_powheg"] = { 
-    "full_name" : "TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_25ns",
+    "full_name" : "TT_TuneCUETP8M1_13TeV-powheg-pythia8_25ns",
     "xs" : 831.76,
-    "gen_events" : 18508030.
+    "gen_events" : 19918700.
 }
 
 mc_samples["TT_amcatnlo"] = { 
@@ -43,19 +43,25 @@ mc_samples["DYJetsToLL_M-50"] = {
 
 mc_samples["ST_t-channel"] = {
     "full_name" : "ST_t-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1_25ns", 
-    "xs" : 70.69,
+    "xs" : 216.99/3.0,
     "gen_events" : 6442497. 
+}
+
+mc_samples["ST_s-channel"] = {
+    "full_name" : "ST_s-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1_25ns", 
+    "xs" : 11.36/3.0,
+    "gen_events" : 984400. 
 }
 
 mc_samples["ST_tW_top"] = {
     "full_name" : "ST_tW_top_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1_25ns", 
-    "xs" : 35.6,
+    "xs" : 35.85,
     "gen_events" : 995600. 
 }
 
 mc_samples["ST_tW_antitop"] = {
     "full_name" : "ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1_25ns", 
-    "xs" : 35.6,
+    "xs" : 35.85,
     "gen_events" : 1000000. 
 }
 
@@ -113,6 +119,20 @@ mc_samples["QCD_Pt-1000toInf_MuEnrichedPt5"] = {
     "gen_events" : 1981954. 
 }
 
+mc_samples["WW"] = {
+    "full_name" : "WW_TuneCUETP8M1_13TeV-pythia8_25ns",
+    "xs" : 118.7,
+    "gen_events" : 994416. 
+}
 
+mc_samples["WZ"] = {
+     "full_name" : "WZ_TuneCUETP8M1_13TeV-pythia8_25ns",
+     "xs" : 66.1,
+     "gen_events" : 991232. 
+}
 
-
+mc_samples["ZZ"] = {
+     "full_name" : "ZZ_TuneCUETP8M1_13TeV-pythia8_25ns",
+     "xs" : 31.8,
+     "gen_events" : 996168. 
+}
